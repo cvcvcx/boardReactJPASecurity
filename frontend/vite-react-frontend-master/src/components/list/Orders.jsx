@@ -18,7 +18,8 @@ import { useNavigate } from "react-router-dom";
 import { axiosRequest } from "../../util/request/requestService";
 import Title from "../Title";
 import Search from "./Search";
-
+import moment from "moment";
+import "moment/locale/ko";
 export default function Orders() {
   const [list, setList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,10 +34,12 @@ export default function Orders() {
       `board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`,
       "get"
     ).then((result) => {
+      console.log(result.data.dtoList);
       setList((prev) => result.data.dtoList);
       setTotalPage((prev) => result.data.totalPage);
     });
   };
+
   //검색항목이나, 크기가 달라졌을때 다시 페이지를 로딩
   useEffect(getGuestBookDateList, [
     currentPage,
@@ -99,7 +102,9 @@ export default function Orders() {
                 <b>[{item.replyCount}]</b>
               </TableCell>
               <TableCell>{item.writerName}</TableCell>
-              <TableCell align="right">{item.formattedRegDate}</TableCell>
+              <TableCell align="right">
+                {moment(item.regDate).format("YYYY년 MM월 DD일")}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

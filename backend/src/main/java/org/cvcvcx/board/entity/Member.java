@@ -3,9 +3,7 @@ package org.cvcvcx.board.entity;
 import lombok.*;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +23,7 @@ public class Member extends BaseEntity{
     private String name;
 
     private String phoneNumber;
+
 
     @ElementCollection
     @Builder.Default

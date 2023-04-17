@@ -23,6 +23,7 @@ import java.util.function.Function;
 public class BoardServiceImpl implements BoardService{
     private final BoardRepository repository;
     @Override
+    @Transactional
     public Long register(BoardDTO dto) {
         log.info(dto);
 

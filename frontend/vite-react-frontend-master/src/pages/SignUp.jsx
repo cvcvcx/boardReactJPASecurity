@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import CustomTextInput from "../components/CustomTextInput";
 import { yupResolver } from "@hookform/resolvers/yup";
 import signUpSchema from "../util/schemas/signUpSchema";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosRequest } from "../util/request/requestService";
 
 const theme = createTheme();
@@ -30,12 +30,14 @@ function SignUp() {
       nickName: "",
     },
   });
+  const navigate = useNavigate();
   const onSubmit = (data) => {
     alert("입력된 data \n" + JSON.stringify(data));
     axiosRequest("signup", "post", data)
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("accessToken", res.data);
+        alert("회원가입 성공!");
+        navigate("/");
         //받은 jwt를 localStorage에 저장
       })
       .catch((e) => alert("회원가입에 실패했습니다."));

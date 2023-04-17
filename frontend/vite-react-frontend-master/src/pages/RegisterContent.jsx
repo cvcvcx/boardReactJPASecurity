@@ -3,23 +3,24 @@ import axios from "axios";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { axiosRequest } from "../util/request/requestService";
 
 const RegisterContent = () => {
   const { control, handleSubmit } = useForm();
-  const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
+  // const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
   const navigate = useNavigate();
   const handleOnSubmit = (event) => {
-    console.log(event);
-    axios
-      .post(`${apiUrl}/board/register`, JSON.stringify(event), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        alert("등록된 게시글 번호" + res.data);
-        navigate("/list");
-      });
+    console.log(JSON.stringify(event));
+
+    axiosRequest(
+      `board/register`,
+      "post",
+      JSON.stringify(event),
+      "application/json"
+    ).then((res) => {
+      alert("등록된 게시글 번호" + res.data);
+      navigate("/");
+    });
   };
 
   return (

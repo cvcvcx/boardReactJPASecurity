@@ -43,7 +43,7 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository{
                       .select(new QBoardListContentDto(
                               board.bno, board.title, board.content,
                               member.name.as("writerName"),
-                               reply.count()))
+                               reply.count(),board.regDate))
                       .from(board)
                       .leftJoin(member).on(board.writer.eq(member))
                       .leftJoin(reply).on(reply.board.eq(board))
@@ -69,14 +69,14 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository{
                                 board.title,
                                 board.content,
                                 member.name,
-                                reply.count().as("replyCount")))
+                                reply.count().as("replyCount"),board.regDate))
                         .from(board)
                         .leftJoin(board.writer,member)//
                         .leftJoin(reply)
                         .on(reply.board.eq(board))
                         .where(
-                                board.bno.gt(0L).and(titleLike(type, keyword)).or(contentLike(type, keyword))
-                                         .or(writerLike(type, keyword))
+                                board.bno.gt(0L).and(titleLike(type, keyword)).and(contentLike(type, keyword))
+                                         .and(writerLike(type, keyword))
                         )
                         .orderBy(getOrderSpecifier(pageable.getSort()).stream()
                                                                       .toArray(OrderSpecifier[]::new))
@@ -93,8 +93,8 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository{
                 .where(
                         board.bno.gt(0L)
                                  .and(titleLike(type, keyword))
-                                 .or(contentLike(type, keyword))
-                                 .or(writerLike(type, keyword))
+                                 .and(contentLike(type, keyword))
+                                 .and(writerLike(type, keyword))
                 );
 
         //

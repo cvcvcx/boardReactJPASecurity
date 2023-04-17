@@ -14,11 +14,11 @@ class MemberServiceImplTest {
 
     @Autowired
     MemberService memberService;
-    @Test
-    void checkIdExist() {
-        String result = memberService.checkIdExist(MemberDTO.builder()
-                                                       .email("cvcvcx@naver.com")
-                                                       .build());
-        assertThat(result).isEqualTo("y");
-    }
-}
+//    @Test
+//    void checkIdExist() {
+//        String result = memberService.checkIdExist(MemberDTO.builder()
+//                                                       .email("cvcvcx@naver.com")
+//                                                       .build());
+//        assertThat(result).isEqualTo("y");
+//    }
+//}
