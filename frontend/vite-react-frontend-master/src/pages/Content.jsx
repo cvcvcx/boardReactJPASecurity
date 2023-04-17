@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReplyForm from "../components/reply/ReplyForm";
+import { axiosRequest } from "../util/request/requestService";
 
 const Content = () => {
   const { control, handleSubmit, reset } = useForm();
@@ -18,22 +19,15 @@ const Content = () => {
 
   let disableModifyTime;
 
-  const queryFetch = useQuery(
-    ["readContent"],
-    () => axios.get(`${apiUrl}/board/read/?id=${state}`),
-    {
-      refetchOnWindowFocus: false,
-      retry: 0,
-      onSuccess: (res) => {
+  useEffect(() => {
+    axiosRequest(`board/read/?id=${state}`, "get")
+      .then((res) => {
         setContent(() => res.data);
         reset(res.data);
-      },
-      onError: (e) => {
+      })
+      .catch((e) => {
         console.log(e.message);
-      },
-    }
-  );
-  useEffect(() => {
+      });
     return () => {
       clearTimeout(disableModifyTime);
     };

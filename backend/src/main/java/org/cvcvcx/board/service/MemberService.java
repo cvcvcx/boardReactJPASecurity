@@ -4,10 +4,10 @@ import org.cvcvcx.board.dto.MemberDTO;
 
 public interface MemberService {
 
-    public String checkIdExist(MemberDTO memberDTO);
+    public Boolean checkIdExist(MemberDTO memberDTO);
 
     public void register(MemberDTO memberDTO);
 
-    public void login(MemberDTO memberDTO);
+    public String login(MemberDTO memberDTO);
     public void logout();
 }

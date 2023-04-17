@@ -17,7 +17,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/checkEmail")
-    public String checkEmail(@RequestBody MemberDTO memberEmail){
+    public Boolean checkEmail(@RequestBody MemberDTO memberEmail){
         log.info(memberEmail.getEmail());
         return memberService.checkIdExist(memberEmail);
     }
@@ -26,7 +26,11 @@ public class MemberController {
     public void register(@RequestBody MemberDTO memberDTO){
         log.info(memberDTO.toString());
         memberService.register(memberDTO);
-
+    }
+    @PostMapping("/signin")
+    public String login(@RequestBody MemberDTO memberDTO){
+        log.info(memberDTO.toString());
+        return memberService.login(memberDTO);
     }
 
 }

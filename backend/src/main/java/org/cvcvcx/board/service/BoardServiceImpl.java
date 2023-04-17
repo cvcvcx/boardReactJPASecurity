@@ -12,6 +12,7 @@ import org.cvcvcx.board.repository.BoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -33,6 +34,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    @Transactional
     public PageResultDTO<BoardListContentDto> getList(PageRequestDTO pageRequestDTO) {
         log.info(pageRequestDTO);
 

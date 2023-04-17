@@ -15,6 +15,7 @@ import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { axiosRequest } from "../../util/request/requestService";
 import Title from "../Title";
 import Search from "./Search";
 
@@ -28,14 +29,13 @@ export default function Orders() {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
   const getGuestBookDateList = () => {
-    axios
-      .get(
-        `${apiUrl}/board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`
-      )
-      .then((result) => {
-        setList((prev) => result.data.dtoList);
-        setTotalPage((prev) => result.data.totalPage);
-      });
+    axiosRequest(
+      `board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`,
+      "get"
+    ).then((result) => {
+      setList((prev) => result.data.dtoList);
+      setTotalPage((prev) => result.data.totalPage);
+    });
   };
   //검색항목이나, 크기가 달라졌을때 다시 페이지를 로딩
   useEffect(getGuestBookDateList, [
