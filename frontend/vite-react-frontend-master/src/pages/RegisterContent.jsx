@@ -17,10 +17,25 @@ const RegisterContent = () => {
       "post",
       JSON.stringify(event),
       "application/json"
-    ).then((res) => {
-      alert("등록된 게시글 번호" + res.data);
+    )
+      .then((res) => {
+        alert("등록된 게시글 번호" + res.data);
+        navigate("/");
+      })
+      .catch((e) => {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+      });
+  };
+  const handleOnClickGoBackBtn = () => {
+    let isCancel = window.confirm(
+      "정말 뒤로가시겠습니까? 지금까지 작성한 글이 모두 지워집니다."
+    );
+    if (isCancel) {
       navigate("/");
-    });
+    } else {
+      return;
+    }
   };
 
   return (
@@ -55,19 +70,15 @@ const RegisterContent = () => {
           )}
         />
 
-        <h3>작성자</h3>
-        <Controller
-          control={control}
-          defaultValue={""}
-          rules={{ required: true }}
-          name="writerEmail"
-          render={({ field }) => (
-            <TextField {...field} label="writerEmail" fullWidth />
-          )}
-        />
-
         <Button type="submit" variant="contained" sx={{ mt: 2, maxWidth: 120 }}>
           등록
+        </Button>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={handleOnClickGoBackBtn}
+          sx={{ mt: 2, ml: 2, maxWidth: 120 }}>
+          뒤로가기
         </Button>
       </form>
     </Paper>

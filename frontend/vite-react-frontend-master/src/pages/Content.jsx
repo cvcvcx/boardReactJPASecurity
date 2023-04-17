@@ -40,39 +40,29 @@ const Content = () => {
   };
 
   const handleOnClickSubmit = (data) => {
-    axios
-      .post(`${apiUrl}/board/modify/?id=${state}`, data, {
-        headers: {
-          "Content-Type": "application/json;",
-        },
-      })
+    axiosRequest(`board/modify/?id=${state}`, "post", data, "application/json")
       .then((res) => {
         console.log(data);
         alert("수정완료");
-        navigate("/list");
+        navigate("/");
       })
       .catch((e) => {
-        console.log(e.message);
+        alert("수정 권한이 없습니다!");
       });
   };
   const handleOnClickDelete = () => {
-    axios
-      .post(`${apiUrl}/board/delete/?id=${state}`, {
-        headers: {
-          "Content-Type": "application/json;",
-        },
-      })
+    axiosRequest(`board/delete/?id=${state}`, "post", "application/json")
       .then((res) => {
         console.log(state);
         alert("삭제완료");
-        navigate("/list");
+        navigate("/");
       })
       .catch((e) => {
-        console.log(e.message);
+        alert("삭제 권한이 없습니다!");
       });
   };
   const handleOnClickListBtn = () => {
-    navigate("/list");
+    navigate("/");
   };
 
   return (

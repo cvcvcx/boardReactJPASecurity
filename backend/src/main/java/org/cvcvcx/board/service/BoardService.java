@@ -1,9 +1,6 @@
 package org.cvcvcx.board.service;
 
-import org.cvcvcx.board.dto.BoardDTO;
-import org.cvcvcx.board.dto.BoardListContentDto;
-import org.cvcvcx.board.dto.PageRequestDTO;
-import org.cvcvcx.board.dto.PageResultDTO;
+import org.cvcvcx.board.dto.*;
 import org.cvcvcx.board.entity.Board;
 import org.cvcvcx.board.entity.Member;
 
@@ -18,7 +15,7 @@ public interface BoardService {
     BoardDTO get(Long bno);
 
     void modify(BoardDTO dto);
-    void remove(Long bno);
+    void remove(Long bno, AuthMemberDTO member);
 
     default Board dtoToEntity(BoardDTO dto){
         Member member = Member.builder().email(dto.getWriterEmail()).build();

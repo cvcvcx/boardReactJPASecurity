@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function axiosRequest(path, method, data, contentType) {
+export function axiosRequest(path, method, data = null, contentType) {
   const loginUser = localStorage.getItem("accessToken");
   let accessToken = "";
   if (loginUser === "" || loginUser === null) {
