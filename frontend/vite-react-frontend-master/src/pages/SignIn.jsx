@@ -14,11 +14,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import CustomTextInput from "../components/CustomTextInput.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import signInSchema from "../util/schemas/signInSchema";
+import { axiosRequest } from "../util/request/requestService.js";
 
 const SignIn = () => {
   const theme = createTheme();
+  const navigate = useNavigate();
   const { control, handleSubmit } = useForm({
     mode: "onBlur",
     resolver: yupResolver(signInSchema),
@@ -28,7 +30,14 @@ const SignIn = () => {
     },
   });
   const onSubmit = (data) => {
-    alert("입력된 data" + data);
+    console.log(data);
+    axiosRequest("signin", "post", data)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("accessToken", res.data);
+        navigate("/");
+      })
+      .catch((e) => alert("로그인에 실패했습니다."));
   };
 
   return (

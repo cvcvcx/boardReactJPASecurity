@@ -13,6 +13,7 @@ import CustomTextInput from "../components/CustomTextInput";
 import { yupResolver } from "@hookform/resolvers/yup";
 import signUpSchema from "../util/schemas/signUpSchema";
 import { Link } from "react-router-dom";
+import { axiosRequest } from "../util/request/requestService";
 
 const theme = createTheme();
 
@@ -31,6 +32,13 @@ function SignUp() {
   });
   const onSubmit = (data) => {
     alert("입력된 data \n" + JSON.stringify(data));
+    axiosRequest("signup", "post", data)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("accessToken", res.data);
+        //받은 jwt를 localStorage에 저장
+      })
+      .catch((e) => alert("회원가입에 실패했습니다."));
   };
   return (
     <ThemeProvider theme={theme}>
