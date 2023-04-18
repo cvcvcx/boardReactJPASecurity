@@ -31,7 +31,7 @@ const SignIn = () => {
   });
   const onSubmit = (data) => {
     console.log(data);
-    axiosRequest("signin", "post", data)
+    axiosRequest("/signin", "post", data)
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("accessToken", res.data);

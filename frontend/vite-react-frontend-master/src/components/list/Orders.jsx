@@ -31,7 +31,7 @@ export default function Orders() {
   const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
   const getGuestBookDateList = () => {
     axiosRequest(
-      `board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`,
+      `/board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`,
       "get"
     ).then((result) => {
       console.log(result.data.dtoList);
@@ -79,11 +79,24 @@ export default function Orders() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell width="15%">#</TableCell>
-            <TableCell width="35%">제목</TableCell>
+            <TableCell sx={{ width: { lg: "15%", md: "15%", xs: "15%" } }}>
+              #
+            </TableCell>
+            <TableCell sx={{ width: { lg: "35%", md: "35%", xs: "50%" } }}>
+              제목
+            </TableCell>
             <TableCell width="5%"></TableCell>
-            <TableCell width="10%">작성자</TableCell>
-            <TableCell width="20%" align="right">
+            <TableCell
+              sx={{ width: { lg: "15%", md: "15%", xs: "30%" } }}
+              align="center">
+              작성자
+            </TableCell>
+            <TableCell
+              sx={{
+                width: { lg: "25%", md: "25%" },
+                display: { xs: "none", md: "table-cell", lg: "table-cell" },
+              }}
+              align="center">
               작성일자
             </TableCell>
           </TableRow>
@@ -102,7 +115,11 @@ export default function Orders() {
                 <b>[{item.replyCount}]</b>
               </TableCell>
               <TableCell>{item.writerName}</TableCell>
-              <TableCell align="right">
+              <TableCell
+                align="right"
+                sx={{
+                  display: { xs: "none", md: "table-cell", lg: "table-cell" },
+                }}>
                 {moment(item.regDate).format("YYYY년 MM월 DD일")}
               </TableCell>
             </TableRow>

@@ -43,7 +43,9 @@ const Search = ({
   return (
     <form onSubmit={handleSubmit(handleSearchBtnClick)}>
       <Box display="flex" justifyContent="right">
-        <FormControl size="small" sx={{ mt: 2, mr: 2 }}>
+        <FormControl
+          size="small"
+          sx={{ mt: 2, mr: 2, width: { xs: "30%", md: "10%" } }}>
           <InputLabel id="search-type-select-label">타입</InputLabel>
           <Controller
             name="type"
@@ -75,7 +77,7 @@ const Search = ({
               name="keyword"
               type="search"
               size="small"
-              label="검색할 내용을 입력하세요"
+              label="검색할 내용..."
               variant="standard"
               sx={{ mt: 1 }}
             />

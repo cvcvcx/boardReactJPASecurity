@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { axiosRequest } from "../../util/request/requestService";
 import ReplyCard from "./ReplyCard";
 
 const ReplyForm = ({ bno }) => {
@@ -13,10 +14,9 @@ const ReplyForm = ({ bno }) => {
     handleSubmit,
   } = useForm();
   const [replies, setReplies] = useState([]);
-  const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
   useEffect(() => {
     if (bno != null) {
-      axios.get(`${apiUrl}/replies/board/${bno}`).then((res) => {
+      axiosRequest(`/replies/board/${bno}`, "get").then((res) => {
         setReplies(res.data);
       });
     }
@@ -24,16 +24,15 @@ const ReplyForm = ({ bno }) => {
 
   const handleReplyOnSubmit = (data) => {
     const postData = { ...data, bno: bno };
-    axios
-      .post(`${apiUrl}/replies/`, JSON.stringify(postData), {
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-      })
-      .then((res) => {
-        alert(res.data);
-        navigate(0);
-      });
+    axiosRequest(
+      `/replies/`,
+      "post",
+      JSON.stringify(postData),
+      "application/json; charset=UTF-8"
+    ).then((res) => {
+      alert(res.data);
+      navigate(0);
+    });
   };
   return (
     <div>
@@ -51,17 +50,6 @@ const ReplyForm = ({ bno }) => {
           defaultValue=""
           helperText={errors.text?.message}
           multiline
-        />
-        <TextField
-          label="작성자"
-          sx={{ mt: 1 }}
-          name="replyer"
-          defaultValue=""
-          {...register("replyer", {
-            required: "작성자는 필수입력항목입니다.",
-          })}
-          error={errors.replyer}
-          helperText={errors.replyer?.message}
         />
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button sx={{ mt: 2 }} variant="contained" type="submit">

@@ -18,7 +18,8 @@ public class Reply extends BaseEntity{
 
     private String text;
 
-    private String replyer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member replyer;
 
     @ManyToOne (fetch = FetchType.LAZY)
     private Board board;

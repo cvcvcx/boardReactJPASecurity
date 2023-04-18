@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
+@Transactional
 public class BoardRepositoryTests {
 
     @Autowired
@@ -36,7 +37,6 @@ public class BoardRepositoryTests {
     }
 
     @Test
-    @Transactional
     public void testRead1(){
         Optional<Board> result = boardRepository.findById(100L);
 

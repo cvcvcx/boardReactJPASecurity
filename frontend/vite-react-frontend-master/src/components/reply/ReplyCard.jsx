@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
+import moment from "moment";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +77,9 @@ const ReplyCard = ({ data, setReplies }) => {
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
           <Typography variant="body2">{data.replyer}</Typography>
-          <Typography variant="body2">{data.modDate}</Typography>
+          <Typography variant="body2">
+            {moment(data.modDate).format("YYYY년 MM월 DD일")}
+          </Typography>
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "end" }}>
           <Button
@@ -111,21 +114,6 @@ const ReplyCard = ({ data, setReplies }) => {
               defaultValue={data.text}
               helperText={errors.text?.message}
               multiline
-            />
-            <TextField
-              label="작성자"
-              sx={{ mt: 1 }}
-              name="replyer"
-              InputProps={{
-                readOnly: true,
-              }}
-              variant="filled"
-              defaultValue={data.replyer}
-              {...register("replyer", {
-                required: "작성자는 필수입력항목입니다.",
-              })}
-              error={errors.replyer}
-              helperText={errors.replyer?.message}
             />
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Button sx={{ mt: 2 }} variant="contained" type="submit">

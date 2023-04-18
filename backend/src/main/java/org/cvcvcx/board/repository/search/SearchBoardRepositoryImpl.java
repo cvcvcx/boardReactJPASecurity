@@ -32,7 +32,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 @Log4j2
 @RequiredArgsConstructor
-public class SearchBoardRepositoryImpl implements SearchBoardRepository{
+public class SearchBoardRepositoryImpl implements SearchBoardRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -40,15 +40,17 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository{
         log.info("search....................................");
 
         List<BoardListContentDto> result = queryFactory
-                      .select(new QBoardListContentDto(
-                              board.bno, board.title, board.content,
-                              member.name.as("writerName"),
-                               reply.count(),board.regDate))
-                      .from(board)
-                      .leftJoin(member).on(board.writer.eq(member))
-                      .leftJoin(reply).on(reply.board.eq(board))
-                       .groupBy(board)
-                      .fetch();
+                .select(new QBoardListContentDto(
+                        board.bno, board.title, board.content,
+                        member.name.as("writerName"),
+                        reply.count(), board.regDate))
+                .from(board)
+                .leftJoin(member)
+                .on(board.writer.eq(member))
+                .leftJoin(reply)
+                .on(reply.board.eq(board))
+                .groupBy(board)
+                .fetch();
 
         log.info("....................................");
         log.info(result);
@@ -60,24 +62,29 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository{
     @Override
     public Page<BoardListContentDto> searchPage(String type, String keyword, Pageable pageable) {
         log.info("searchPage..............................");
-
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
         JPAQuery<BoardListContentDto> query =
                 queryFactory
                         .select(
-                        new QBoardListContentDto(
-                                board.bno,
-                                board.title,
-                                board.content,
-                                member.name,
-                                reply.count().as("replyCount"),board.regDate))
+                                new QBoardListContentDto(
+                                        board.bno,
+                                        board.title,
+                                        board.content,
+                                        member.name,
+                                        reply.count()
+                                             .as("replyCount"), board.regDate))
                         .from(board)
-                        .leftJoin(board.writer,member)//
+                        .leftJoin(board.writer, member)//
                         .leftJoin(reply)
                         .on(reply.board.eq(board))
                         .where(
-                                board.bno.gt(0L).and(titleLike(type, keyword)).and(contentLike(type, keyword))
-                                         .and(writerLike(type, keyword))
+                                board.bno.gt(0L))
+                        .where(
+                                (titleLike(type, keyword))
+                                        .or(contentLike(type, keyword))
+                                        .or(writerLike(type, keyword))
                         )
+
                         .orderBy(getOrderSpecifier(pageable.getSort()).stream()
                                                                       .toArray(OrderSpecifier[]::new))
                         .limit(pageable.getPageSize())
@@ -91,74 +98,78 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository{
                 .select(board.count())
                 .from(board)
                 .where(
-                        board.bno.gt(0L)
-                                 .and(titleLike(type, keyword))
-                                 .and(contentLike(type, keyword))
-                                 .and(writerLike(type, keyword))
+                        board.bno.gt(0L))
+                .where(
+                        (titleLike(type, keyword))
+                                .or(contentLike(type, keyword))
+                                .or(writerLike(type, keyword))
+
                 );
 
         //
 
-        return PageableExecutionUtils.getPage(result, pageable,count::fetchOne );
+        return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
 
     }
 
     private BooleanExpression titleLike(String type, String keyword) {
-        if(type==null||keyword==null){
+        if (type == null || keyword == null) {
             return null;
         }
-        if(type.contains("t")&& hasText(keyword)){
+        if (type.contains("t") && hasText(keyword)) {
             return board.title.contains(keyword);
         }
         return null;
     }
 
     private BooleanExpression contentLike(String type, String keyword) {
-        if(type==null||keyword==null){
+        if (type == null || keyword == null) {
             return null;
         }
-        if(type.contains("c")&& hasText(keyword)){
+        if (type.contains("c") && hasText(keyword)) {
             return board.content.contains(keyword);
         }
         return null;
     }
 
     private BooleanExpression writerLike(String type, String keyword) {
-        if(type==null||keyword==null){
+        if (type == null || keyword == null) {
             return null;
         }
-        if(type.contains("w")&& hasText(keyword)){
+        if (type.contains("w") && hasText(keyword)) {
             return board.writer.name.contains(keyword);
         }
         return null;
     }
 
-    private static List<OrderSpecifier> getOrderSpecifier(Sort sort) {;
+    private static List<OrderSpecifier> getOrderSpecifier(Sort sort) {
+        ;
         List<OrderSpecifier> orderSpecifierList = new ArrayList<>();
-        sort.stream().forEach(order -> {
-            //sort에는 여러개의 정렬기준이 들어갈 수 있기 때문에, forEach문으로 그 조건들을 다 가져온다.
-            //Order direction은 내림차순인지 오름차순인지 정함 ex) Order.ASC, Order.DESC
-            //prop은 어떤 항목을 기준으로 하는지 정함 ex) bno, title, content
-            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
-            String prop = order.getProperty();
+        sort.stream()
+            .forEach(order -> {
+                //sort에는 여러개의 정렬기준이 들어갈 수 있기 때문에, forEach문으로 그 조건들을 다 가져온다.
+                //Order direction은 내림차순인지 오름차순인지 정함 ex) Order.ASC, Order.DESC
+                //prop은 어떤 항목을 기준으로 하는지 정함 ex) bno, title, content
+                Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+                String prop = order.getProperty();
 
-            PathBuilder orderByExpression = new PathBuilder(Board.class,"board");
-            OrderSpecifier orderSpecifier = new OrderSpecifier<>(direction, orderByExpression.get(prop));
-            orderSpecifierList.add(orderSpecifier);
-        });
+                PathBuilder orderByExpression = new PathBuilder(Board.class, "board");
+                OrderSpecifier orderSpecifier = new OrderSpecifier<>(direction, orderByExpression.get(prop));
+                orderSpecifierList.add(orderSpecifier);
+            });
         return orderSpecifierList;
     }
 
     private static void checkTypeAndKeyword(String keyword, QBoard board, QMember member, String type, BooleanBuilder conditionBuilder) {
-            if(type.contains("t")){
-                conditionBuilder.or(board.title.contains(keyword));
-            }
-            if(type.contains("w")){
-                conditionBuilder.or(member.name.contains(keyword));
-            }
-            if(type.contains("c")){
-                conditionBuilder.or(board.content.contains(keyword));
-            }
+        if (type.contains("t")) {
+            conditionBuilder.or(board.title.contains(keyword));
+        }
+        if (type.contains("w")) {
+            conditionBuilder.or(member.name.contains(keyword));
+        }
+        if (type.contains("c")) {
+            conditionBuilder.or(board.content.contains(keyword));
+        }
 
     }
 }

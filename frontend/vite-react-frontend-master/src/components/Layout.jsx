@@ -83,7 +83,7 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 const Layout = (props) => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -146,6 +146,7 @@ const Layout = (props) => {
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
+            display: () => (open ? "none" : "box"),
           }}>
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>

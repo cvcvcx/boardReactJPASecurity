@@ -19,9 +19,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
     private final BoardRepository repository;
     private final MemberRepository memberRepository;
+
     @Override
     @Transactional
     public Long register(BoardDTO dto) {
@@ -41,7 +42,7 @@ public class BoardServiceImpl implements BoardService{
 
         Page<BoardListContentDto> result = repository.
                 searchPage(pageRequestDTO.getType(), pageRequestDTO.getKeyword(), pageRequestDTO.getPageable(Sort.by("bno")
-                                                                                                                                                    .descending()));
+                                                                                                                 .descending()));
 
         return new PageResultDTO<>(result);
     }
@@ -52,7 +53,7 @@ public class BoardServiceImpl implements BoardService{
     public BoardDTO get(Long bno) {
         Object result = repository.getBoardByBno(bno);
         Object[] arr = (Object[]) result;
-        return entityToDTO((Board)arr[0],(Member) arr[1],(Long) arr[2]);
+        return entityToDTO((Board) arr[0], (Member) arr[1], (Long) arr[2]);
     }
 
     @Override
@@ -61,13 +62,13 @@ public class BoardServiceImpl implements BoardService{
 
         Optional<Board> result = repository.findById(dto.getBno());
 
-        if(result.isPresent()){
+        if (result.isPresent()) {
             Member writer = result.get()
                                   .getWriter();
             Optional<Member> loginMember = memberRepository.findByEmail(dto.getWriterEmail());
-            if(loginMember.isEmpty()){
+            if (loginMember.isEmpty()) {
                 throw new BadCredentialsException("수정 권한이 없습니다.");
-            }else if(loginMember.get()!= writer){
+            } else if (loginMember.get() != writer) {
                 throw new BadCredentialsException("수정 권한이 없습니다.");
             }
             Board entity = result.get();
@@ -81,19 +82,19 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional
-    public void remove(Long bno,AuthMemberDTO loginMember) {
+    public void remove(Long bno, AuthMemberDTO loginMember) {
         Optional<Board> result = repository.findById(bno);
 
-        if(result.isPresent()){
-        Member writer = result.get()
-                              .getWriter();
+        if (result.isPresent()) {
+            Member writer = result.get()
+                                  .getWriter();
             Optional<Member> loginedMember = memberRepository.findByEmail(loginMember.getUsername());
-            if(loginedMember.isEmpty()){
-            throw new BadCredentialsException("삭제 권한이 없습니다.");
-        }else if(loginedMember.get()!= writer){
-            throw new BadCredentialsException("삭제 권한이 없습니다.");
-        }
-        repository.deleteById(bno);
+            if (loginedMember.isEmpty()) {
+                throw new BadCredentialsException("삭제 권한이 없습니다.");
+            } else if (loginedMember.get() != writer) {
+                throw new BadCredentialsException("삭제 권한이 없습니다.");
+            }
+            repository.deleteById(bno);
         }
     }
 

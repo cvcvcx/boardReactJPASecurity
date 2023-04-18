@@ -33,7 +33,7 @@ function SignUp() {
   const navigate = useNavigate();
   const onSubmit = (data) => {
     alert("입력된 data \n" + JSON.stringify(data));
-    axiosRequest("signup", "post", data)
+    axiosRequest("/signup", "post", data)
       .then((res) => {
         console.log(res.data);
         alert("회원가입 성공!");

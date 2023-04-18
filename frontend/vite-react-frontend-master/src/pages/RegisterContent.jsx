@@ -13,7 +13,7 @@ const RegisterContent = () => {
     console.log(JSON.stringify(event));
 
     axiosRequest(
-      `board/register`,
+      `/board/register`,
       "post",
       JSON.stringify(event),
       "application/json"

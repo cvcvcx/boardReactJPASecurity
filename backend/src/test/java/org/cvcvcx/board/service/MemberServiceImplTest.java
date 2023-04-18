@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class MemberServiceImplTest {
 
-    @Autowired
-    MemberService memberService;
+//    @Autowired
+//    MemberService memberService;
 //    @Test
 //    void checkIdExist() {
 //        String result = memberService.checkIdExist(MemberDTO.builder()
 //                                                       .email("cvcvcx@naver.com")
 //                                                       .build());
 //        assertThat(result).isEqualTo("y");
-//    }
+    }
 //}

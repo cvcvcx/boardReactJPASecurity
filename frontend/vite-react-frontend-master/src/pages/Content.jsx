@@ -15,12 +15,10 @@ const Content = () => {
   const [content, setContent] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
 
-  const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
-
   let disableModifyTime;
 
   useEffect(() => {
-    axiosRequest(`board/read/?id=${state}`, "get")
+    axiosRequest(`/board/read/?id=${state}`, "get")
       .then((res) => {
         setContent(() => res.data);
         reset(res.data);
@@ -40,7 +38,7 @@ const Content = () => {
   };
 
   const handleOnClickSubmit = (data) => {
-    axiosRequest(`board/modify/?id=${state}`, "post", data, "application/json")
+    axiosRequest(`/board/modify/?id=${state}`, "post", data, "application/json")
       .then((res) => {
         console.log(data);
         alert("수정완료");
@@ -51,7 +49,7 @@ const Content = () => {
       });
   };
   const handleOnClickDelete = () => {
-    axiosRequest(`board/delete/?id=${state}`, "post", "application/json")
+    axiosRequest(`/board/delete/?id=${state}`, "post", "application/json")
       .then((res) => {
         console.log(state);
         alert("삭제완료");
