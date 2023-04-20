@@ -8,6 +8,7 @@ import ReplyCard from "./ReplyCard";
 
 const ReplyForm = ({ bno }) => {
   const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -16,47 +17,60 @@ const ReplyForm = ({ bno }) => {
   const [replies, setReplies] = useState([]);
   useEffect(() => {
     if (bno != null) {
-      axiosRequest(`/replies/board/${bno}`, "get").then((res) => {
-        setReplies(res.data);
-      });
+      axiosRequest(`/replies/board/${bno}`, "get")
+        .then((res) => {
+          setReplies(res.data);
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
     }
-  }, [bno, replies.length]);
+  }, [bno]);
 
   const handleReplyOnSubmit = (data) => {
     const postData = { ...data, bno: bno };
     axiosRequest(
-      `/replies/`,
+      `/replies`,
       "post",
       JSON.stringify(postData),
       "application/json; charset=UTF-8"
-    ).then((res) => {
-      alert(res.data);
-      navigate(0);
-    });
+    )
+      .then((res) => {
+        alert(res.data);
+        navigate(0);
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
   return (
     <div>
-      <form onSubmit={handleSubmit(handleReplyOnSubmit)}>
-        <h3>댓글</h3>
-        <TextField
-          rows={3}
-          label="comments"
-          name="text"
-          {...register("text", {
-            required: "댓글 내용은 필수입력항목입니다.",
-          })}
-          fullWidth
-          error={errors.text}
-          defaultValue=""
-          helperText={errors.text?.message}
-          multiline
-        />
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button sx={{ mt: 2 }} variant="contained" type="submit">
-            등록
-          </Button>
-        </div>
-      </form>
+      {sessionStorage.getItem("userEmail") == null ? (
+        <></>
+      ) : (
+        <form onSubmit={handleSubmit(handleReplyOnSubmit)}>
+          <h3>댓글</h3>
+          <TextField
+            rows={3}
+            label="comments"
+            name="text"
+            {...register("text", {
+              required: "댓글 내용은 필수입력항목입니다.",
+            })}
+            fullWidth
+            error={errors.text}
+            defaultValue=""
+            helperText={errors.text?.message}
+            multiline
+          />
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button sx={{ mt: 2 }} variant="contained" type="submit">
+              등록
+            </Button>
+          </div>
+        </form>
+      )}
+
       {/* 아래 reverse를 통해 최근 등록된 댓글이 가장 위로 올 수 있도록함 */}
       {[...replies].reverse().map((item) => (
         <ReplyCard

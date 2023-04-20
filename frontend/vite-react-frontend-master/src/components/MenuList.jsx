@@ -7,31 +7,36 @@ import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 
-export const MenuList = () => {
+export const MenuList = (props) => {
   const navigate = useNavigate();
 
   const onClickBoardButton = () => {
     navigate("/");
+    props.toggleDrawer();
   };
   const onClickLoginButton = () => {
+    props.toggleDrawer();
     navigate("/login");
   };
   const onClickLogoutButton = () => {
     alert("로그아웃");
-    localStorage.removeItem("accessToken");
-    setIsLoggedin(false);
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("userEmail");
+    props.toggleDrawer();
+    navigate(0);
   };
   const [isLoggedin, setIsLoggedin] = useState(false);
   useEffect(() => {
     if (
-      localStorage.getItem("accessToken") == "" ||
-      localStorage.getItem("accessToken") == null
+      sessionStorage.getItem("accessToken") == "" ||
+      sessionStorage.getItem("accessToken") == null
     ) {
       setIsLoggedin(false);
     } else {
       setIsLoggedin(true);
     }
-  }, [isLoggedin]);
+  }, []);
 
   const mainListItems = (
     <Fragment>
@@ -41,8 +46,7 @@ export const MenuList = () => {
         </ListItemIcon>
         <ListItemText primary="게시물" />
       </ListItemButton>
-      {localStorage.getItem("accessToken") == "" ||
-      localStorage.getItem("accessToken") == null ? (
+      {!isLoggedin ? (
         <ListItemButton onClick={onClickLoginButton}>
           <ListItemIcon>
             <PeopleIcon />

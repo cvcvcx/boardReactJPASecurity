@@ -83,7 +83,7 @@ public class BoardRepositoryTests {
     @Test
     public void testSearchPage1(){
         Pageable pageable = PageRequest.of(0,10,Sort.by("bno").descending());
-        Page<BoardListContentDto> t = boardRepository.searchPage("t", "1", pageable);
+        Page<BoardListContentDto> t = boardRepository.searchPage("", "", pageable);
         for (BoardListContentDto boardListContentDto : t) {
             System.out.println("boardListContentDto = " + boardListContentDto);
         }

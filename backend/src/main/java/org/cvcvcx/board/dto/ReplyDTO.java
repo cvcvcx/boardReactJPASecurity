@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.cvcvcx.board.entity.Member;
 
 import java.time.LocalDateTime;
 

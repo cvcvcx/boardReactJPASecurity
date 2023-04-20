@@ -7,6 +7,7 @@ import org.cvcvcx.board.entity.Board;
 import org.cvcvcx.board.entity.Member;
 import org.cvcvcx.board.repository.BoardRepository;
 import org.cvcvcx.board.repository.MemberRepository;
+import org.cvcvcx.board.repository.ReplyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository repository;
     private final MemberRepository memberRepository;
+    private final ReplyRepository replyRepository;
 
     @Override
     @Transactional
@@ -94,6 +96,9 @@ public class BoardServiceImpl implements BoardService {
             } else if (loginedMember.get() != writer) {
                 throw new BadCredentialsException("삭제 권한이 없습니다.");
             }
+
+            replyRepository.deleteByBno(bno);
+
             repository.deleteById(bno);
         }
     }

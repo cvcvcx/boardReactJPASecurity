@@ -2,6 +2,7 @@ package org.cvcvcx.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cvcvcx.board.dto.LoginResponseDTO;
 import org.cvcvcx.board.dto.MemberDTO;
 import org.cvcvcx.board.service.MemberService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class MemberController {
         memberService.register(memberDTO);
     }
     @PostMapping("/signin")
-    public String login(@RequestBody MemberDTO memberDTO){
+    public LoginResponseDTO login(@RequestBody MemberDTO memberDTO){
         log.info(memberDTO.toString());
         return memberService.login(memberDTO);
     }

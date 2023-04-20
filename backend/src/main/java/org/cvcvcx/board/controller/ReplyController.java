@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.cvcvcx.board.dto.AuthMemberDTO;
 import org.cvcvcx.board.dto.ReplyDTO;
+import org.cvcvcx.board.entity.Member;
 import org.cvcvcx.board.service.ReplyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/replies/")
+@RequestMapping("/replies")
 @Log4j2
 @RequiredArgsConstructor
 public class ReplyController {
@@ -55,6 +56,7 @@ public class ReplyController {
     @DeleteMapping(value = "/{rno}")
     public ResponseEntity<String> remove(@PathVariable("rno") Long rno,@AuthenticationPrincipal AuthMemberDTO loginMember) {
         log.info("rno : " + rno);
+        System.out.println(loginMember.getUsername());
         replyService.remove(rno,loginMember);
 
         return new ResponseEntity<>("success", HttpStatus.OK);

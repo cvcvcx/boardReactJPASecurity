@@ -1,5 +1,6 @@
 package org.cvcvcx.board.service;
 
+import org.cvcvcx.board.dto.LoginResponseDTO;
 import org.cvcvcx.board.dto.MemberDTO;
 
 public interface MemberService {
@@ -8,6 +9,6 @@ public interface MemberService {
 
     public void register(MemberDTO memberDTO);
 
-    public String login(MemberDTO memberDTO);
+    public LoginResponseDTO login(MemberDTO memberDTO);
     public void logout();
 }

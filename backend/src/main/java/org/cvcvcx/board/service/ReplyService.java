@@ -3,6 +3,7 @@ package org.cvcvcx.board.service;
 import org.cvcvcx.board.dto.AuthMemberDTO;
 import org.cvcvcx.board.dto.ReplyDTO;
 import org.cvcvcx.board.entity.Board;
+import org.cvcvcx.board.entity.Member;
 import org.cvcvcx.board.entity.Reply;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface ReplyService {
         Reply reply = Reply.builder()
                 .rno(replyDTO.getRno())
                 .text(replyDTO.getText())
+                .replyer(Member.builder().email(replyDTO.getReplyer()).build())
                 .board(board)
                 .build();
         return  reply;

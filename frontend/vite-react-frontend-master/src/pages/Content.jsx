@@ -14,8 +14,17 @@ const Content = () => {
   const { state } = useLocation();
   const [content, setContent] = useState({});
   const [modifyMode, setModifyMode] = useState(false);
-
+  const [isMyContent, setIsMyContent] = useState(false);
   let disableModifyTime;
+  const userEmail = sessionStorage.getItem("userEmail");
+
+  useEffect(() => {
+    if (userEmail == content.writerEmail) {
+      setIsMyContent(false);
+    } else {
+      setIsMyContent(true);
+    }
+  }, [userEmail]);
 
   useEffect(() => {
     axiosRequest(`/board/read/?id=${state}`, "get")
@@ -49,7 +58,7 @@ const Content = () => {
       });
   };
   const handleOnClickDelete = () => {
-    axiosRequest(`/board/delete/?id=${state}`, "post", "application/json")
+    axiosRequest(`/board/delete/?id=${state}`, "post", null, "application/json")
       .then((res) => {
         console.log(state);
         alert("삭제완료");
@@ -146,29 +155,35 @@ const Content = () => {
             />
           )}
         />
-
-        {modifyMode ? (
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{ mt: 2, maxWidth: 120 }}>
-            수정완료
-          </Button>
+        {isMyContent ? (
+          <>
+            {" "}
+            {modifyMode ? (
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ mt: 2, maxWidth: 120 }}>
+                수정완료
+              </Button>
+            ) : (
+              <Button
+                onClick={handleOnClickModify}
+                variant="contained"
+                sx={{ mt: 2, maxWidth: 120 }}>
+                수정
+              </Button>
+            )}
+            <Button
+              onClick={handleOnClickDelete}
+              variant="contained"
+              color="error"
+              sx={{ mt: 2, ml: 2, maxWidth: 120 }}>
+              삭제
+            </Button>
+          </>
         ) : (
-          <Button
-            onClick={handleOnClickModify}
-            variant="contained"
-            sx={{ mt: 2, maxWidth: 120 }}>
-            수정
-          </Button>
+          <></>
         )}
-        <Button
-          onClick={handleOnClickDelete}
-          variant="contained"
-          color="error"
-          sx={{ mt: 2, ml: 2, maxWidth: 120 }}>
-          삭제
-        </Button>
         <Button
           onClick={handleOnClickListBtn}
           variant="contained"

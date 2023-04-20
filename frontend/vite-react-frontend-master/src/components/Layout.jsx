@@ -25,8 +25,8 @@ function Copyright(props) {
       align="center"
       {...props}>
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://cvcvcx9.duckdns.org/">
+        조창훈의 게시판
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -114,7 +114,7 @@ const Layout = (props) => {
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}>
-              Dashboard
+              게시판
             </Typography>
           </Toolbar>
         </AppBar>
@@ -132,7 +132,7 @@ const Layout = (props) => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <MenuList />
+            <MenuList toggleDrawer={toggleDrawer} />
             <Divider sx={{ my: 1 }} />
           </List>
         </Drawer>

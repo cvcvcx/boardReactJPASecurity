@@ -54,6 +54,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://cvcvcx9.duckdns.org");
+        corsConfiguration.addAllowedOrigin("http://127.0.0.1:5173");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
 

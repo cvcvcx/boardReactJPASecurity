@@ -15,31 +15,31 @@ import java.util.stream.IntStream;
 @SpringBootTest
 @Transactional
 public class ReplyRepositoryTests {
-//    @Autowired
-//    private ReplyRepository replyRepository;
+    @Autowired
+    private ReplyRepository replyRepository;
 
 
-//    @Test
-//    public void insertReply(){
-//        IntStream.rangeClosed(1,300).forEach(i->{
-//            long bno = (long)(Math.random()*100)+1;
-//            Board board = Board.builder().bno(bno).build();
-//            Reply reply = Reply.builder()
-//                    .text("Reply..."+i)
-//                    .board(board)
-//                    .replyer("guest")
-//                    .build();
-//            replyRepository.save(reply);
-//        });
-//    }
+    @Test
+    public void insertReply(){
+        IntStream.rangeClosed(1,300).forEach(i->{
+            long bno = 59L;
+            Board board = Board.builder().bno(bno).build();
+            Reply reply = Reply.builder()
+                    .text("Reply..."+i)
+                    .board(board)
+                    .replyer(Member.builder().email("cvcvcx@naver.com").build())
+                    .build();
+            replyRepository.save(reply);
+        });
+    }
 
 
 
-//    @Test
-//    public void testReadReplyByBoard(){
-//        List<Reply> replyList = replyRepository.getRepliesByBoardOrderByRno(Board.builder().bno(58L).build());
-//        replyList.forEach(reply -> System.out.println(reply));
-//    }
-//
+    @Test
+    public void testReadReplyByBoard(){
+        List<Reply> replyList = replyRepository.getRepliesByBoardOrderByRno(Board.builder().bno(59L).build());
+        replyList.forEach(reply -> System.out.println(reply));
+    }
+
 
 }

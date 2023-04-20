@@ -34,7 +34,6 @@ export default function Orders() {
       `/board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`,
       "get"
     ).then((result) => {
-      console.log(result.data.dtoList);
       setList((prev) => result.data.dtoList);
       setTotalPage((prev) => result.data.totalPage);
     });
@@ -61,7 +60,7 @@ export default function Orders() {
   return (
     <Fragment>
       <Grid container justifyContent="space-between">
-        <Title>제품 리스트</Title>
+        <Title>게시글 리스트</Title>
         <FormControl fullWidth sx={{ maxWidth: "120px" }}>
           <InputLabel id="page-size-label">게시글 수</InputLabel>
           <Select

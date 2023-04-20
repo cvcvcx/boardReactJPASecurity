@@ -12,16 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ReplyServiceImplTest {
-//
-//    @Autowired
-//    private ReplyService service;
 
-//    @Test
-//    public void testGetList(){
-//        Long bno = 58L;
-//        List<ReplyDTO> replayDTOList = service.getList(bno);
-//        replayDTOList.forEach(replyDTO -> System.out.println(replyDTO));
-//    }
+    @Autowired
+    private ReplyService service;
+
+    @Test
+    public void testGetList(){
+        Long bno = 59L;
+        List<ReplyDTO> replayDTOList = service.getList(bno);
+        replayDTOList.forEach(replyDTO -> System.out.println(replyDTO));
+    }
 
 
 }

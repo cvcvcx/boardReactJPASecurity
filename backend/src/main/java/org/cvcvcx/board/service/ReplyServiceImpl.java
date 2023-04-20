@@ -10,6 +10,7 @@ import org.cvcvcx.board.repository.MemberRepository;
 import org.cvcvcx.board.repository.ReplyRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,13 +33,16 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
+    @Transactional
     public List<ReplyDTO> getList(Long bno) {
         List<Reply> result = repository.getRepliesByBoardOrderByRno(Board.builder()
                                                                          .bno(bno)
                                                                          .build());
 
         return result.stream()
-                     .map(reply -> entityToDTO(reply))
+                     .map(reply -> {
+                         return entityToDTO(reply);
+                     })
                      .collect(Collectors.toList());
     }
 
@@ -51,13 +55,13 @@ public class ReplyServiceImpl implements ReplyService {
             Optional<Member> loginMember = memberRepository.findByEmail(replyDTO.getReplyer());
             if (loginMember.isEmpty()) {
                 throw new BadCredentialsException("수정권한이 없습니다.");
-            }else if(loginMember.get()!=replyer){
+            } else if (loginMember.get() != replyer) {
                 throw new BadCredentialsException("수정권한이 없습니다.");
-            }else {
-            Reply replyEntity = dtoToEntity(replyDTO);
-            repository.save(replyEntity);
+            } else {
+                Reply replyEntity = dtoToEntity(replyDTO);
+                repository.save(replyEntity);
             }
-        }else {
+        } else {
             throw new NullPointerException("댓글이 존재하지 않습니다.");
         }
     }
@@ -67,7 +71,8 @@ public class ReplyServiceImpl implements ReplyService {
         Optional<Reply> result = repository.findById(rno);
 
         if (result.isPresent()) {
-            Member writer = result.get().getReplyer();
+            Member writer = result.get()
+                                  .getReplyer();
 
             Optional<Member> loginedMember = memberRepository.findByEmail(loginMember.getUsername());
             if (loginedMember.isEmpty()) {

@@ -1,6 +1,7 @@
 package org.cvcvcx.board.service;
 
 import lombok.RequiredArgsConstructor;
+import org.cvcvcx.board.dto.LoginResponseDTO;
 import org.cvcvcx.board.dto.MemberDTO;
 import org.cvcvcx.board.entity.Member;
 import org.cvcvcx.board.entity.MemberRole;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,7 +32,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void register(MemberDTO memberDTO) {
         Boolean validateDuplicatedId = checkIdExist(memberDTO);
-        if(!validateDuplicatedId) {
+        if (!validateDuplicatedId) {
             Member newMember = Member.builder()
                                      .email(memberDTO.getEmail())
                                      .name(memberDTO.getName())
@@ -40,21 +41,28 @@ public class MemberServiceImpl implements MemberService{
                                      .build();
             newMember.addMemberRole(MemberRole.USER);
             memberRepository.save(newMember);
-        }else{
+        } else {
             throw new RuntimeException("member already exist");
         }
 
     }
 
     @Override
-    public String login(MemberDTO memberDTO) {
+    public LoginResponseDTO login(MemberDTO memberDTO) {
 
-        Member member = memberRepository.findByEmail(memberDTO.getEmail()).orElseThrow(() ->
-                 new BadCredentialsException("잘못된 계정정보입니다."));
-        if(!passwordEncoder.matches(memberDTO.getPassword(), member.getPassword())){
+        Member member = memberRepository.findByEmail(memberDTO.getEmail())
+                                        .orElseThrow(() ->
+                                                new BadCredentialsException("잘못된 계정정보입니다."));
+        if (!passwordEncoder.matches(memberDTO.getPassword(), member.getPassword())) {
             throw new BadCredentialsException("잘못된 계정정보입니다.");
         }
-        return jwtProvider.createToken(member.getEmail(),member.getRoleSet().stream().collect(Collectors.toList()));
+        return LoginResponseDTO.builder()
+                               .userEmail(member.getEmail())
+                               .userName(member.getName())
+                               .accessToken(jwtProvider.createToken(member.getEmail(), member.getRoleSet()
+                                                                                             .stream()
+                                                                                             .collect(Collectors.toList())))
+                               .build();
     }
 
     @Override

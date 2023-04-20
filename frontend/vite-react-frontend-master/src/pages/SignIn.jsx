@@ -33,8 +33,10 @@ const SignIn = () => {
     console.log(data);
     axiosRequest("/signin", "post", data)
       .then((res) => {
-        console.log(res.data);
-        localStorage.setItem("accessToken", res.data);
+        console.log(JSON.stringify(res.data));
+        sessionStorage.setItem("accessToken", res.data.accessToken);
+        sessionStorage.setItem("userEmail", res.data.userEmail);
+        sessionStorage.setItem("userName", res.data.userName);
         navigate("/");
       })
       .catch((e) => alert("로그인에 실패했습니다."));

@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,11 +79,8 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository {
                         .leftJoin(reply)
                         .on(reply.board.eq(board))
                         .where(
-                                board.bno.gt(0L))
-                        .where(
-                                (titleLike(type, keyword))
-                                        .or(contentLike(type, keyword))
-                                        .or(writerLike(type, keyword))
+                                board.bno.gt(0L)
+                                         .and(searchLike(type,keyword))
                         )
 
                         .orderBy(getOrderSpecifier(pageable.getSort()).stream()
@@ -98,11 +96,8 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository {
                 .select(board.count())
                 .from(board)
                 .where(
-                        board.bno.gt(0L))
-                .where(
-                        (titleLike(type, keyword))
-                                .or(contentLike(type, keyword))
-                                .or(writerLike(type, keyword))
+                        board.bno.gt(0L)
+                                 .and(searchLike(type,keyword))
 
                 );
 
@@ -110,6 +105,14 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository {
 
         return PageableExecutionUtils.getPage(result, pageable, count::fetchOne);
 
+    }
+
+    private BooleanExpression searchLike(String type,String keyword){
+        if(StringUtils.hasText(type)&&StringUtils.hasText(keyword)){
+        return titleLike(type,keyword).or(contentLike(type,keyword)).or(writerLike(type,keyword));
+        }else {
+            return null;
+        }
     }
 
     private BooleanExpression titleLike(String type, String keyword) {
@@ -160,16 +163,5 @@ public class SearchBoardRepositoryImpl implements SearchBoardRepository {
         return orderSpecifierList;
     }
 
-    private static void checkTypeAndKeyword(String keyword, QBoard board, QMember member, String type, BooleanBuilder conditionBuilder) {
-        if (type.contains("t")) {
-            conditionBuilder.or(board.title.contains(keyword));
-        }
-        if (type.contains("w")) {
-            conditionBuilder.or(member.name.contains(keyword));
-        }
-        if (type.contains("c")) {
-            conditionBuilder.or(board.content.contains(keyword));
-        }
 
-    }
 }
