@@ -6,8 +6,13 @@
 
 ### BackEnd - Java Spring Boot
 - JPA및 QueryDsl으로 IDE에서 에러 발견 및 동적 쿼리 검색기능 구현
-- Spring Security 도입으로 Rest Api Jwt 로그인 구현
+- Spring Security 도입으로 Rest Api Jwt 로그인 구현 (2023/04/22)기준 완료
 - 페이지네이션 적용
+
+### 발견한 문제점과 수정사항
+- 댓글이 달린 게시물 삭제 안되는 버그 발견 (수정완료)
+- 배포시 React에 있는 CSP로 인한 요청 url이 자동으로 https로 변환됨(https ssl 적용으로 수정완료)
+- 검색시, 제목은 제대로 검색이 되는데, 제목+내용이나 제목+작성자+내용으로 검색이 제대로 안되는 문제 발견 - (JPA BooleanExpression 로직 문제, 로직수정으로 지금은 정상작동)
 
 # 스크린샷
 ![스크린샷 2023-04-21 오후 7 19 23](https://user-images.githubusercontent.com/69139476/233612440-cd0eb2ef-9c1b-4a55-9c3b-a7403f0d7d5f.png)
