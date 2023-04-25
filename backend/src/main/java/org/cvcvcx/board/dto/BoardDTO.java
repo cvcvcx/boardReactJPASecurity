@@ -3,6 +3,8 @@ package org.cvcvcx.board.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,9 +14,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BoardDTO {
     private Long bno;
+    @NotEmpty
+    @Max(100)
     private String title;
+    @NotEmpty
+    @Max(1000)
     private String content;
     private String writerEmail;
+
     private String writerName;
     private LocalDateTime regDate;
     private LocalDateTime modDate;

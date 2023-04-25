@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -18,13 +20,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/checkEmail")
-    public Boolean checkEmail(@RequestBody MemberDTO memberEmail){
+    public Boolean checkEmail(@RequestBody @Valid MemberDTO memberEmail){
         log.info(memberEmail.getEmail());
         return memberService.checkIdExist(memberEmail);
     }
 
     @PostMapping("/signup")
-    public void register(@RequestBody MemberDTO memberDTO){
+    public void register(@RequestBody @Valid MemberDTO memberDTO){
         log.info(memberDTO.toString());
         memberService.register(memberDTO);
     }

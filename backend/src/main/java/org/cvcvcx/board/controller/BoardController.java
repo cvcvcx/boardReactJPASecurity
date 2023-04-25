@@ -9,6 +9,8 @@ import org.cvcvcx.board.service.MemberService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/board")
 @Log4j2
@@ -24,7 +26,7 @@ public class BoardController {
     }
 
     @PostMapping("/register")
-    public String registerPost(@RequestBody BoardDTO dto, @AuthenticationPrincipal AuthMemberDTO member){
+    public String registerPost(@RequestBody @Valid BoardDTO dto, @AuthenticationPrincipal AuthMemberDTO member){
         log.info("컨텐츠 등록..."+dto);
         dto.setWriterEmail(member.getUsername());
         Long register = boardService.register(dto);
@@ -38,7 +40,7 @@ public class BoardController {
     }
 
     @PostMapping("/modify")
-    public String modifyPost(@RequestBody BoardDTO dto, @AuthenticationPrincipal AuthMemberDTO member) {
+    public String modifyPost(@RequestBody @Valid BoardDTO dto, @AuthenticationPrincipal AuthMemberDTO member) {
         log.info(dto);
         dto.setWriterEmail(member.getUsername());
         boardService.modify(dto);

@@ -62,6 +62,7 @@ const ReplyForm = ({ bno }) => {
             defaultValue=""
             helperText={errors.text?.message}
             multiline
+            inputProps={{ maxLength: 120 }}
           />
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button sx={{ mt: 2 }} variant="contained" type="submit">

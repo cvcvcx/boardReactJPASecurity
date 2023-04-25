@@ -49,7 +49,12 @@ const RegisterContent = () => {
           rules={{ required: true }}
           name="title"
           render={({ field }) => (
-            <TextField label="title" fullWidth {...field} />
+            <TextField
+              label="title"
+              fullWidth
+              {...field}
+              inputProps={{ maxLength: 100 }}
+            />
           )}
         />
 
@@ -66,6 +71,7 @@ const RegisterContent = () => {
               fullWidth
               multiline
               rows={15}
+              inputProps={{ maxLength: 1000 }}
             />
           )}
         />
