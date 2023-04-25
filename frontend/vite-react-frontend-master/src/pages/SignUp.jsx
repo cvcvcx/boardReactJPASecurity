@@ -14,11 +14,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import signUpSchema from "../util/schemas/signUpSchema";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosRequest } from "../util/request/requestService";
+import { useState } from "react";
 
 const theme = createTheme();
 
 function SignUp() {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     mode: "onBlur",
     resolver: yupResolver(signUpSchema),
     defaultValues: {
@@ -31,14 +32,26 @@ function SignUp() {
     },
   });
   const navigate = useNavigate();
+  const [emailValidated, setEmailValidated] = useState(false);
   const onSubmit = (data) => {
     axiosRequest("/signup", "post", data)
       .then((res) => {
         alert("회원가입 성공!");
         navigate("/");
-        //받은 jwt를 localStorage에 저장
       })
       .catch((e) => alert("회원가입에 실패했습니다."));
+  };
+  const onClickCheckEmailSubmitBtn = (data) => {
+    const emailValue = getValues("email");
+    alert(emailValue);
+    axiosRequest("/checkEmail", "post", { email: emailValue }).then((res) => {
+      if (res.data == true) {
+        alert("이미 존재하는 아이디입니다!");
+        setEmailValidated(false);
+      } else {
+        setEmailValidated(true);
+      }
+    });
   };
   return (
     <ThemeProvider theme={theme}>
@@ -70,6 +83,9 @@ function SignUp() {
                     control={control}
                     autoComplete="on"
                   />
+                  <Button onClick={onClickCheckEmailSubmitBtn}>
+                    이메일 중복 확인
+                  </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <CustomTextInput
@@ -128,6 +144,7 @@ function SignUp() {
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={!emailValidated}
                 sx={{ mt: 3, mb: 2 }}>
                 Sign Up
               </Button>
