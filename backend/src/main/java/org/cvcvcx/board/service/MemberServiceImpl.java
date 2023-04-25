@@ -5,6 +5,8 @@ import org.cvcvcx.board.dto.LoginResponseDTO;
 import org.cvcvcx.board.dto.MemberDTO;
 import org.cvcvcx.board.entity.Member;
 import org.cvcvcx.board.entity.MemberRole;
+import org.cvcvcx.board.exception.EmailDuplicateException;
+import org.cvcvcx.board.exception.ErrorCode;
 import org.cvcvcx.board.repository.MemberRepository;
 import org.cvcvcx.board.security.JwtProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -42,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
             newMember.addMemberRole(MemberRole.USER);
             memberRepository.save(newMember);
         } else {
-            throw new RuntimeException("member already exist");
+            throw new EmailDuplicateException("이메일이 이미 존재합니다.", ErrorCode.EMAIL_DUPLICATION);
         }
 
     }
