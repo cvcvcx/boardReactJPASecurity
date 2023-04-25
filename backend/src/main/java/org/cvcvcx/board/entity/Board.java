@@ -16,7 +16,9 @@ public class Board extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bno;
 
+    @Column(length = 300)
     private String title;
+    @Column(length = 2000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
