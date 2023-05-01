@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,10 +16,10 @@ import java.time.LocalDateTime;
 public class BoardDTO {
     private Long bno;
     @NotEmpty
-    @Max(100)
+    @Size(min = 1,max = 100)
     private String title;
     @NotEmpty
-    @Max(1000)
+    @Size(min = 1,max = 1000)
     private String content;
     private String writerEmail;
 

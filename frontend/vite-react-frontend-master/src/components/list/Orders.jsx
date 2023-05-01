@@ -28,14 +28,13 @@ export default function Orders() {
   const [searchType, setSearchType] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
-  const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
   const getGuestBookDateList = () => {
     axiosRequest(
       `/board/list?page=${currentPage}&size=${pageSize}&type=${searchType}&keyword=${searchKeyword}`,
       "get"
     ).then((result) => {
-      setList((prev) => result.data.dtoList);
-      setTotalPage((prev) => result.data.totalPage);
+      setList(() => result.data.dtoList);
+      setTotalPage(() => result.data.totalPage);
     });
   };
 
@@ -51,7 +50,7 @@ export default function Orders() {
     setCurrentPage(nowPageInt);
   };
   const handlePageSize = (event) => {
-    setPageSize(event.target.value);
+    setPageSize(() => event.target.value);
   };
 
   const handleIdClick = (id) => {

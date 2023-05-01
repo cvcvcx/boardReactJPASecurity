@@ -44,14 +44,18 @@ function SignUp() {
   const onClickCheckEmailSubmitBtn = (data) => {
     const emailValue = getValues("email");
     alert(emailValue);
-    axiosRequest("/checkEmail", "post", { email: emailValue }).then((res) => {
-      if (res.data == true) {
-        alert("이미 존재하는 아이디입니다!");
-        setEmailValidated(false);
-      } else {
-        setEmailValidated(true);
-      }
-    });
+    axiosRequest("/checkEmail", "post", { email: emailValue })
+      .then((res) => {
+        if (res.data == true) {
+          alert("이미 존재하는 아이디입니다!");
+          setEmailValidated(false);
+        } else if ((res.status = 200)) {
+          setEmailValidated(true);
+        }
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
   return (
     <ThemeProvider theme={theme}>

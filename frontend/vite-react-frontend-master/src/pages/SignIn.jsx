@@ -30,7 +30,6 @@ const SignIn = () => {
     },
   });
   const onSubmit = (data) => {
-    console.log(data);
     axiosRequest("/signin", "post", data)
       .then((res) => {
         console.log(JSON.stringify(res.data));

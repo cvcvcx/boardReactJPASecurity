@@ -10,8 +10,6 @@ const RegisterContent = () => {
   // const apiUrl = import.meta.env.VITE_PRODUCTION_API_URL;
   const navigate = useNavigate();
   const handleOnSubmit = (event) => {
-    console.log(JSON.stringify(event));
-
     axiosRequest(
       `/board/register`,
       "post",
@@ -23,8 +21,9 @@ const RegisterContent = () => {
         navigate("/");
       })
       .catch((e) => {
-        alert("로그인이 필요합니다.");
-        navigate("/login");
+        console.log(e.message);
+        alert("에러가 발생하였습니다.");
+        navigate("/");
       });
   };
   const handleOnClickGoBackBtn = () => {
